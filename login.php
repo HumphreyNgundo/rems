@@ -13,13 +13,14 @@ if (isset($_REQUEST['login'])) {
 		$result = mysqli_query($con, $sql);
 		$row = mysqli_fetch_array($result);
 		if ($row) {
-
 			$_SESSION['uid'] = $row['uid'];
 			$_SESSION['uemail'] = $email;
+			$_SESSION['utype'] = $row['utype']; // Store user type in session
 			header("location:index.php");
 		} else {
-			$error = "<p class='alert alert-warning'>Email or Password doesnot match!</p> ";
+			$error = "<p class='alert alert-warning'>Email or Password does not match!</p> ";
 		}
+		
 	} else {
 		$error = "<p class='alert alert-warning'>Please Fill all the fields</p>";
 	}
