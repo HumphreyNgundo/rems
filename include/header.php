@@ -18,6 +18,9 @@
                                 <li class="nav-item"> <a class="nav-link" href="about.php">About</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="contact.php">Contact</a> </li>
                                 <li class="nav-item"> <a class="nav-link" href="property.php">Properties</a> </li>
+                                <?php if (isset($_SESSION['uemail']) && ($_SESSION['utype'] === 'agent')) { ?>
+                                <li class="nav-item"> <a class="nav-link" href="admin_bookings.php">Bookings</a> </li>
+                                <?php } ?>
 
                                 <?php if (isset($_SESSION['uemail'])) { ?>
                                     <li class="nav-item dropdown">
