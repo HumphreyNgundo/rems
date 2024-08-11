@@ -113,7 +113,7 @@ if (!isset($_SESSION['auser'])) {
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-3 col-sm-6 col-12">
+				<!-- <div class="col-xl-3 col-sm-6 col-12">
 					<div class="card">
 						<div class="card-body">
 							<div class="dash-widget-header">
@@ -131,6 +131,29 @@ if (!isset($_SESSION['auser'])) {
 								<h6 class="text-muted">Builder</h6>
 								<div class="progress progress-sm">
 									<div class="progress-bar bg-danger w-50"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> -->
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card">
+						<div class="card-body">
+							<div class="dash-widget-header">
+								<span class="dash-widget-icon bg-warning">
+									<i class="fe fe-table"></i>
+								</span>
+
+							</div>
+							<div class="dash-widget-info">
+
+								<h3><?php $sql = "SELECT * FROM property where type = 'apartment'";
+									$query = $con->query($sql);
+									echo "$query->num_rows"; ?></h3>
+
+								<h6 class="text-muted">No. of Apartments</h6>
+								<div class="progress progress-sm">
+									<div class="progress-bar bg-info w-50"></div>
 								</div>
 							</div>
 						</div>
@@ -163,30 +186,6 @@ if (!isset($_SESSION['auser'])) {
 
 
 			<div class="row">
-				<div class="col-xl-3 col-sm-6 col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="dash-widget-header">
-								<span class="dash-widget-icon bg-warning">
-									<i class="fe fe-table"></i>
-								</span>
-
-							</div>
-							<div class="dash-widget-info">
-
-								<h3><?php $sql = "SELECT * FROM property where type = 'apartment'";
-									$query = $con->query($sql);
-									echo "$query->num_rows"; ?></h3>
-
-								<h6 class="text-muted">No. of Apartments</h6>
-								<div class="progress progress-sm">
-									<div class="progress-bar bg-info w-50"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-
 				<div class="col-xl-3 col-sm-6 col-12">
 					<div class="card">
 						<div class="card-body">
@@ -250,7 +249,7 @@ if (!isset($_SESSION['auser'])) {
 									$query = $con->query($sql);
 									echo "$query->num_rows"; ?></h3>
 
-								<h6 class="text-muted">No. of Flat</h6>
+								<h6 class="text-muted">No. of Flats</h6>
 								<div class="progress progress-sm">
 									<div class="progress-bar bg-info w-50"></div>
 								</div>
@@ -258,9 +257,6 @@ if (!isset($_SESSION['auser'])) {
 						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="row">
 				<div class="col-xl-3 col-sm-6 col-12">
 					<div class="card">
 						<div class="card-body">
@@ -284,7 +280,9 @@ if (!isset($_SESSION['auser'])) {
 						</div>
 					</div>
 				</div>
+			</div>
 
+			<div class="row">
 				<div class="col-xl-3 col-sm-6 col-12">
 					<div class="card">
 						<div class="card-body">
