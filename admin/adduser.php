@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $uname = mysqli_real_escape_string($con, $_POST['uname']);
     $uemail = mysqli_real_escape_string($con, $_POST['uemail']);
     $uphone = mysqli_real_escape_string($con, $_POST['uphone']);
-    $upass = sha1($_POST['upass']); // Using SHA1 for password hashing
+    $upass = sha1($_POST['upass']); 
     $utype = mysqli_real_escape_string($con, $_POST['utype']);
 
     // Handle file upload

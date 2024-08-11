@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from dreamguys.co.in/demo/ventura/form-basic-inputs.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 25 Aug 2019 04:41:04 GMT -->
-
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
@@ -22,11 +20,6 @@
 
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="assets/css/style.css">
-
-	<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
 </head>
 
 <body>

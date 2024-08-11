@@ -80,19 +80,6 @@ if (!isset($_SESSION['auser'])) {
 				<li>
 					<a href="dashboard.php"><i class="fe fe-home"></i> <span>Dashboard</span></a>
 				</li>
-
-				<!-- <li class="menu-title"> 
-								<span>Authentication</span>
-							</li>
-						
-							<li class="submenu">
-								<a href="#"><i class="fe fe-user"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="index.php"> Login </a></li>
-									<li><a href="register.php"> Register </a></li>
-									
-								</ul>
-							</li> -->
 				<li class="menu-title">
 					<span>All Users</span>
 				</li>

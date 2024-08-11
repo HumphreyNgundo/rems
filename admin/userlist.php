@@ -1,7 +1,6 @@
 <?php
 session_start();
 require("config.php");
-////code
 
 if (!isset($_SESSION['auser'])) {
 	header("location:index.php");
@@ -35,11 +34,6 @@ if (!isset($_SESSION['auser'])) {
 
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="assets/css/style.css">
-
-	<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
 </head>
 
 <body>

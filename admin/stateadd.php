@@ -51,11 +51,6 @@ if (isset($_POST['insert'])) {
 
 	<!-- Main CSS -->
 	<link rel="stylesheet" href="assets/css/style.css">
-
-	<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
 </head>
 
 <body>
@@ -168,22 +163,6 @@ if (isset($_POST['insert'])) {
 			<!-- view state -->
 		</div>
 	</div>
-	<!-- /Main Wrapper -->
-	<!---
-			
-			<label class="col-lg-3 col-form-label">State Name</label>
-													<div class="col-lg-9">	
-														<select class="form-control">
-															<option>Select</option>
-															<option>Option 1</option>
-															<option>Option 2</option>
-															<option>Option 3</option>
-															<option>Option 4</option>
-															<option>Option 5</option>
-														</select>
-													</div>
-			
-			---->
 
 	<!-- jQuery -->
 	<script src="assets/js/jquery-3.2.1.min.js"></script>

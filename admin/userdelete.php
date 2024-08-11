@@ -11,7 +11,6 @@ while($row = mysqli_fetch_array($result))
 	}
 @unlink('user/'.$img);
 
-//end view code
 $msg="";
 $sql = "DELETE FROM user WHERE uid = {$uid}";
 $result = mysqli_query($con, $sql);
