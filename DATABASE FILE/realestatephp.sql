@@ -329,3 +329,29 @@ ALTER TABLE `user`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+---Other Edits
+
+CREATE TABLE `property_viewings` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `property_id` int(50) NOT NULL,
+  `user_id` int(50) NOT NULL,
+  `viewing_date` datetime NOT NULL,
+  `status` enum('pending', 'approved', 'rejected') DEFAULT 'pending',
+  `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`property_id`) REFERENCES `property`(`pid`),
+  FOREIGN KEY (`user_id`) REFERENCES `user`(`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `agent_availability` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `agent_id` int(50) NOT NULL,
+  `available_date` date NOT NULL,
+  `start_time` time NOT NULL,
+  `end_time` time NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`agent_id`) REFERENCES `user`(`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `property` ADD COLUMN `agent_id` int(50) NOT NULL AFTER `uid`;

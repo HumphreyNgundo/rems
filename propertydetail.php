@@ -4,6 +4,12 @@ session_cache_limiter(false);
 session_start();
 include("config.php");
 
+if (!isset($_SESSION['uid'])) {
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+    header("Location: login.php");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -28,6 +34,7 @@ include("config.php");
 
     <!--	Css Link
 	========================================================-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap-slider.css">
     <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
@@ -41,6 +48,27 @@ include("config.php");
     <!--	Title
 	=========================================================-->
     <title>REMS</title>
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .fc-day-grid-event {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .fc-day-grid-event:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        #schedule-form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        #viewing-time {
+            height: 45px;
+        }
+    </style>
 </head>
 
 <body>
@@ -69,7 +97,6 @@ include("config.php");
                 </div>
             </div>
             <!--	Banner   --->
-
 
             <div class="full-row">
                 <div class="container">
@@ -102,7 +129,7 @@ include("config.php");
                                             <div class="ls-slide" data-ls="duration:7500; transition2d:5; kenburnszoom:in; kenburnsscale:1.2;"> <img width="1920" height="1080" src="admin/property/<?php echo $row['22']; ?>" class="ls-bg" alt="" /> </div>
                                         </div>
                                     </div>
-                                </div> 
+                                </div>
                                 <div class="row mb-4">
                                     <div class="col-md-6">
                                         <div class="bg-success d-table px-3 py-2 rounded text-white text-capitalize">For <?php echo $row['5']; ?></div>
@@ -130,7 +157,7 @@ include("config.php");
 
                                     <h5 class="mt-5 mb-4 text-secondary">Property Summary</h5>
                                     <div class="table-striped font-14 pb-2">
-                                        <table class="w-100"> 
+                                        <table class="w-100">
                                             <tbody>
                                                 <tr>
                                                     <td>BHK :</td>
@@ -185,6 +212,7 @@ include("config.php");
                                              
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
 
@@ -221,6 +249,22 @@ include("config.php");
 
                                 </ul>
                             </div>
+
+                            <div class="mt-5">
+                                <h5 class="text-secondary double-down-line-left position-relative pb-4 mb-4">Schedule a Viewing</h5>
+                                <div id="calendar"></div>
+                                <form id="schedule-form" method="post" action="schedule_viewing.php">
+                                    <input type="hidden" name="property_id" value="<?php echo $id; ?>">
+                                    <input type="hidden" name="selected_date" id="selected-date">
+                                    <div class="form-group mt-4">
+                                        <label for="viewing-time">Select Time:</label>
+                                        <select class="form-control" id="viewing-time" name="viewing_time" required>
+                                            <option value="">Choose a time</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success mt-3">Request Viewing</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -229,7 +273,6 @@ include("config.php");
             <!--	Footer   start-->
             <?php include("include/footer.php"); ?>
             <!--	Footer   start-->
-
 
             <!-- Scroll to top -->
             <a href="#" class="bg-secondary text-white hover-text-secondary" id="scroll"><i class="fas fa-angle-up"></i></a>
@@ -255,6 +298,107 @@ include("config.php");
     <script src="js/jquery.slider.js"></script>
     <script src="js/wow.js"></script>
     <script src="js/custom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            selectable: true,
+            selectHelper: true,
+            select: function(start, end) {
+                var selectedDate = start.format('YYYY-MM-DD');
+                $('#selected-date').val(selectedDate);
+                populateTimeSlots(selectedDate);
+            },
+            validRange: function(nowDate) {
+                return {
+                    start: nowDate,
+                    end: moment(nowDate).add(3, 'months')
+                };
+            },
+            selectConstraint: {
+                start: moment().startOf('day'),
+                end: moment().add(3, 'months').endOf('day')
+            }
+        });
+
+        function populateTimeSlots(date) {
+    var select = $('#viewing-time');
+    select.empty();
+    select.append('<option value="">Choose a time</option>');
+
+    var today = moment().format('YYYY-MM-DD');
+    var selectedDate = moment(date);
+
+    $.ajax({
+        url: 'get_available_slots.php',
+        method: 'POST',
+        data: { date: date, property_id: <?php echo $id; ?> },
+        dataType: 'json',
+        success: function(availableSlots) {
+            $.each(availableSlots, function(index, slot) {
+                var slotTime = moment(date + ' ' + slot);
+                if (selectedDate.isSame(today, 'day') && slotTime.isBefore(moment())) {
+                    // Skip past time slots for today
+                    return true; // continue to next iteration
+                }
+                var formattedSlot = moment(slot, 'HH:mm').format('h:mm A');
+                select.append($('<option></option>').attr('value', slot).text(formattedSlot));
+            });
+
+            if (select.find('option').length === 1) {
+                select.append($('<option></option>').attr('value', '').text('No available slots'));
+            }
+        },
+        error: function() {
+            alert('Error fetching available time slots.');
+            select.append($('<option></option>').attr('value', '').text('Error loading time slots'));
+        }
+    });
+}
+
+        $('#schedule-form').on('submit', function(e) {
+            e.preventDefault();
+            var selectedDate = $('#selected-date').val();
+            var selectedTime = $('#viewing-time').val();
+            
+            if (!selectedDate || !selectedTime) {
+                alert('Please select both date and time for the viewing.');
+                return;
+            }
+
+            var selectedDateTime = moment(selectedDate + ' ' + selectedTime);
+            if (selectedDateTime.isBefore(moment())) {
+                alert('Cannot schedule a viewing for a past date and time.');
+                return;
+            }
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert(response.message);
+                        $('#schedule-form')[0].reset();
+                        $('#calendar').fullCalendar('unselect');
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Error submitting viewing request.');
+                }
+            });
+        });
+    });
+    </script>
 
 </body>
 
